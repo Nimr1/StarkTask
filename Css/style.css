@@ -1,0 +1,226 @@
+/* --- Color Palette from Image ---
+    Dark Blue (Background): #0A2540 (approx)
+    Lighter Blue (Text/Highlight): #00A9E0 (approx)
+    Orange (Accent): #FF8C00 (approx)
+    Purple (Secondary Accent): #8A2BE2 (approx - BlueViolet for visibility)
+    Light Grey/Off-White (for some text on dark backgrounds if needed): #E0E0E0
+--- */
+
+body {
+    font-family: 'Orbitron', sans-serif;
+    background-color: #0A2540; /* Dark Blue */
+    color: #E0E0E0; /* Light Grey/Off-White for general text readability */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap'); */ /* This is now in HTML head */
+
+.container {
+    width: 90%;
+    max-width: 1400px;
+    background-color: rgba(10, 37, 64, 0.85); /* Slightly lighter Dark Blue or transparent overlay */
+    border: 1px solid #00A9E0; /* Lighter Blue */
+    box-shadow: 0 0 25px rgba(0, 169, 224, 0.5); /* Lighter Blue shadow */
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #00A9E0; /* Lighter Blue */
+    text-shadow: 0 0 10px #00A9E0; /* Lighter Blue */
+    margin-bottom: 20px;
+}
+
+button, .button-like {
+    background-color: #FF8C00; /* Orange Accent */
+    color: #FFFFFF; /* White text for contrast on orange */
+    border: 1px solid #FF8C00; /* Orange Accent */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+    margin: 5px;
+}
+
+button:hover, .button-like:hover {
+    background-color: #00A9E0; /* Lighter Blue for hover */
+    color: #0A2540; /* Dark Blue text for contrast */
+    box-shadow: 0 0 15px #00A9E0; /* Lighter Blue shadow */
+    border-color: #00A9E0;
+}
+
+/* Specific button for "View Tasks" or less prominent actions */
+button.secondary-action {
+    background-color: #8A2BE2; /* Purple Accent */
+    color: #FFFFFF;
+    border-color: #8A2BE2;
+}
+button.secondary-action:hover {
+    background-color: #00A9E0; /* Lighter Blue for hover */
+    color: #0A2540;
+    border-color: #00A9E0;
+}
+
+
+.main-menu {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #0E2F50; /* Darker shade for modal content area */
+    margin: auto;
+    padding: 30px;
+    border: 1px solid #00A9E0; /* Lighter Blue */
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 0 20px rgba(0, 169, 224, 0.4); /* Lighter Blue shadow */
+}
+
+.close-button {
+    color: #AAAAAA;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #FF8C00; /* Orange Accent for hover on close */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #00A9E0; /* Lighter Blue */
+    font-weight: bold;
+}
+
+.form-group select,
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    background-color: #0A2540; /* Dark Blue */
+    border: 1px solid #00A9E0; /* Lighter Blue */
+    color: #E0E0E0; /* Light Grey/Off-White text */
+    border-radius: 4px;
+    font-family: 'Orbitron', sans-serif;
+}
+.form-group input::placeholder {
+    color: #0077A3; /* Muted Lighter Blue */
+}
+.form-group small {
+    color: #8A2BE2; /* Purple for hints */
+}
+
+#taskTableContainer {
+    overflow-x: auto;
+}
+
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+
+.task-table th, .task-table td {
+    border: 1px solid #0077A3; /* Muted Lighter Blue for table borders */
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.task-table th {
+    background-color: #0E2F50; /* Darker shade for headers */
+    color: #00A9E0; /* Lighter Blue text for headers */
+    cursor: pointer;
+    position: relative;
+}
+.task-table th .sort-indicator {
+    font-size: 0.8em;
+    margin-left: 5px;
+    color: #FF8C00; /* Orange for sort indicator */
+}
+
+.task-table th input[type="text"] {
+    width: calc(100% - 10px);
+    padding: 5px;
+    background-color: #0A2540; /* Dark Blue */
+    border: 1px solid #00A9E0; /* Lighter Blue */
+    color: #E0E0E0; /* Light Grey text */
+    border-radius: 3px;
+    font-size: 0.9em;
+    margin-top: 3px;
+}
+
+.task-table tr:nth-child(even) {
+    background-color: rgba(14, 47, 80, 0.7); /* Slightly different dark shade for even rows */
+}
+.task-table tr:hover {
+    background-color: rgba(0, 169, 224, 0.1); /* Lighter Blue transparent hover */
+}
+.task-table td {
+    color: #C0C0C0; /* Lighter grey for table data for readability */
+}
+.task-table td button { /* Ensure buttons inside table follow main button style */
+    background-color: #FF8C00;
+    color: #FFFFFF;
+    border-color: #FF8C00;
+}
+.task-table td button:hover {
+    background-color: #00A9E0;
+    color: #0A2540;
+    border-color: #00A9E0;
+}
+
+
+.user-stats {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: rgba(14, 47, 80, 0.9); /* Darker shade variant */
+    border: 1px solid #8A2BE2; /* Purple Accent border */
+    border-radius: 5px;
+    text-align: center;
+}
+.user-stats p {
+    margin: 5px 0;
+    font-size: 1.1em;
+    color: #E0E0E0; /* Light text */
+}
+.user-stats span {
+    color: #FF8C00; /* Orange for stat values */
+    font-weight: bold;
+}

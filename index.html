@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarkTask - Influence Tasks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script type="importmap">
+    {
+        "imports": {
+            "get-starknet": "https://esm.sh/get-starknet@3.0.1"
+        }
+    }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>StarkTask <span style="font-size: 0.6em; color: #FF8C00;">(Influence Edition)</span></h1>
+
+        <div id="account-menu" style="text-align: center; margin-bottom: 20px; padding: 10px; background-color: #0E2F50; border-radius: 5px;">
+            <div id="starknet-connect" class="button-like" onclick="starknetService.starknetConnect()" style="cursor:pointer; padding: 8px 15px; display: inline-block;">Connect Wallet</div>
+            <div id="starknet-wallet" class="hidden" style="display: none; align-items: center; justify-content: center; gap: 10px;">
+                <img class="icon" alt="wallet icon" src="" style="width: 24px; height: 24px; border-radius: 50%;">
+                <div class="address" title="Your connected wallet address" style="color: #00A9E0; font-size: 0.9em;"></div>
+                <div id="login-button-container">
+                    <div class="connected-action login button-like secondary-action" onclick="starknetService.login()" style="cursor:pointer; padding: 5px 10px; display: inline-block; font-size: 0.9em;">Login (Sign)</div>
+                </div>
+                <div id="disconnect-button-container">
+                    <button class="button-like" onclick="starknetService.disconnectWallet()" style="margin-left: 10px; padding: 5px 10px; background-color: #8A2BE2; border-color: #8A2BE2; font-size: 0.9em;">Disconnect</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-menu" id="mainMenu">
+            <button id="logTaskBtn">Log New Influence Task</button>
+            <button id="chooseTaskBtn" class="secondary-action">View Available Tasks</button>
+        </div>
+
+        <div id="logTaskModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="closeLogTaskModal">&times;</span>
+                <h2>Log a New Influence Task</h2>
+                <form id="logTaskForm">
+                    <div class="form-group">
+                        <label for="influenceRequestType">Request Type:</label>
+                        <select id="influenceRequestType" required>
+                            <option value="">-- Select Type --</option>
+                            <option value="BUILD">Build Building</option>
+                            <option value="DELIVER">Deliver Resources</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="itemSelectionContainer" style="display: none;">
+                        <label for="influenceItemSelect" id="itemSelectLabel">Item:</label>
+                        <select id="influenceItemSelect" required>
+                            </select>
+                    </div>
+
+                    <div class="form-group" id="itemQuantityContainer" style="display: none;">
+                        <label for="influenceItemQuantity">Quantity:</label>
+                        <input type="number" id="influenceItemQuantity" min="1" placeholder="e.g., 100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="influencePaymentAmount">Payment Amount (in SWAY):</label>
+                        <input type="number" id="influencePaymentAmount" placeholder="e.g., 1000" required min="1">
+                        <small>Payment will be made in SWAY. Contract: ...placeholder</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="influenceLocationAsteroid">Target Asteroid ID (1 - 250000):</label>
+                        <input type="number" id="influenceLocationAsteroid" placeholder="e.g., 12345" min="1" max="250000" required>
+                    </div>
+
+                    <div class="form-group" id="locationPlotContainer" style="display: none;">
+                        <label for="influenceLocationPlot">Target Plot ID (Number):</label>
+                        <input type="number" id="influenceLocationPlot" placeholder="e.g., 1" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="influenceDeadline">Deadline (from task creation):</label>
+                        <select id="influenceDeadline" required>
+                            <option value="1">1 Day</option>
+                            <option value="3" selected>3 Days</option>
+                            <option value="5">5 Days</option>
+                            <option value="7">7 Days</option>
+                            <option value="9">9 Days</option>
+                            <option value="11">11 Days</option>
+                            <option value="15">15 Days</option>
+                            <option value="20">20 Days</option>
+                            <option value="30">30 Days</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="button-like">Log Influence Task</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="chooseTaskView" style="display:none;">
+            <h2>Available Tasks</h2>
+            <div id="taskTableContainer">
+                <table class="task-table">
+                    <thead>
+                        <tr>
+                            <th data-column-key="id" data-sortable="true">ID <span class="sort-indicator"></span></th>
+                            <th data-column-key="requestType" data-sortable="true">Type <input type="text" class="filter-input" data-column="1"><span class="sort-indicator"></span></th>
+                            <th data-column-key="itemName" data-sortable="true">Item <input type="text" class="filter-input" data-column="2"><span class="sort-indicator"></span></th>
+                            <th data-column-key="itemQuantity" data-sortable="true">Qty <input type="text" class="filter-input" data-column="3"><span class="sort-indicator"></span></th>
+                            <th data-column-key="payment" data-sortable="true">Payment <input type="text" class="filter-input" data-column="4"><span class="sort-indicator"></span></th>
+                            <th data-column-key="asteroidId" data-sortable="true">Asteroid ID <input type="text" class="filter-input" data-column="5"><span class="sort-indicator"></span></th>
+                            <th data-column-key="plotId" data-sortable="true">Plot ID <input type="text" class="filter-input" data-column="6"><span class="sort-indicator"></span></th>
+                            <th data-column-key="deadline" data-sortable="true">Deadline <input type="text" class="filter-input" data-column="7"><span class="sort-indicator"></span></th>
+                            <th data-column-key="daysLeft" data-sortable="true">Days Left <span class="sort-indicator"></span></th>
+                            <th data-column-key="status" data-sortable="true">Status <input type="text" class="filter-input" data-column="8"><span class="sort-indicator"></span></th>
+                            <th data-column-key="creator" data-sortable="true">Creator <input type="text" class="filter-input" data-column="9"><span class="sort-indicator"></span></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="user-stats" id="userStatsSection" style="display:none;">
+            <h2>Your Performance</h2>
+            <p>Tasks Accepted: <span id="tasksAcceptedStat">0</span></p>
+            <p>Tasks Successfully Submitted: <span id="tasksSubmittedStat">0</span></p>
+            <p>Success Rate: <span id="successRateStat">N/A</span></p>
+        </div>
+
+    </div>
+
+    <script type="module" src="js/starknet.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
